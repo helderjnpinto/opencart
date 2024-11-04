@@ -9,9 +9,12 @@ RUN apt-get update \
                      libpng-dev \
                      libzip-dev \
                      libcurl3-dev \
-					 libwebp-dev \
+                     libwebp-dev \
   && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   && docker-php-ext-install -j$(nproc) gd zip mysqli curl \
   && docker-php-ext-enable gd zip mysqli curl
 
 RUN a2enmod rewrite
+
+# Ensure /var/www/html has the correct permissions for user 1000
+RUN chown -R 1000:1000 /var/www/html
